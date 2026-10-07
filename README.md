@@ -73,6 +73,7 @@ apple-clone/
     |-- main.jsx
   |- .eslintrc.json
   |- .gitignore
+  |- .live-activity-smoke-trigger
   |- bun.lock
   |- index.html
   |- netlify.toml
