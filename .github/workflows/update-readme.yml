@@ -8,6 +8,7 @@ on:
       - "README.md"
 
 permissions:
+  actions: read
   contents: write
 
 jobs:
@@ -15,14 +16,38 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - name: Live Activity · refresh
+        uses: davidpovarsky/github-automation/live-refresh@main
+        continue-on-error: true
+        with:
+          event: refresh
+          device_id: ${{ secrets.NOTIFY_DEVICE_ID }}
+          token: ${{ secrets.NOTIFY_DEVICE_TOKEN }}
+          github_token: ${{ github.token }}
       - name: Checkout Repository
         uses: actions/checkout@v6
 
+      - name: Live Activity · refresh
+        uses: davidpovarsky/github-automation/live-refresh@main
+        continue-on-error: true
+        with:
+          event: refresh
+          device_id: ${{ secrets.NOTIFY_DEVICE_ID }}
+          token: ${{ secrets.NOTIFY_DEVICE_TOKEN }}
+          github_token: ${{ github.token }}
       - name: Setup Node.js
         uses: actions/setup-node@v6
         with:
           node-version: "lts/*"
 
+      - name: Live Activity · refresh
+        uses: davidpovarsky/github-automation/live-refresh@main
+        continue-on-error: true
+        with:
+          event: refresh
+          device_id: ${{ secrets.NOTIFY_DEVICE_ID }}
+          token: ${{ secrets.NOTIFY_DEVICE_TOKEN }}
+          github_token: ${{ github.token }}
       - name: Update README.md
         run: |
           node -e "
@@ -124,6 +149,14 @@ jobs:
           fs.writeFileSync(readmePath, readme);
           "
 
+      - name: Live Activity · refresh
+        uses: davidpovarsky/github-automation/live-refresh@main
+        continue-on-error: true
+        with:
+          event: refresh
+          device_id: ${{ secrets.NOTIFY_DEVICE_ID }}
+          token: ${{ secrets.NOTIFY_DEVICE_TOKEN }}
+          github_token: ${{ github.token }}
       - name: Commit and Push Changes
         run: |
           git config user.name "github-actions[bot]"

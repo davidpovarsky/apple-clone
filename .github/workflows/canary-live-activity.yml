@@ -1,0 +1,83 @@
+name: Canary Live Activity
+
+on:
+  workflow_dispatch:
+    inputs:
+      scenario:
+        description: 'Scenario to exercise: success, failure, or matrix'
+        required: false
+        default: 'success'
+
+permissions:
+  actions: read
+  contents: read
+
+jobs:
+  canary-single:
+    name: Canary Build
+    if: ${{ inputs.scenario != 'matrix' }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Live Activity · refresh
+        uses: davidpovarsky/github-automation/live-refresh@main
+        continue-on-error: true
+        with:
+          event: refresh
+          device_id: ${{ secrets.NOTIFY_DEVICE_ID }}
+          token: ${{ secrets.NOTIFY_DEVICE_TOKEN }}
+          github_token: ${{ github.token }}
+      - name: Prepare Canary Workspace
+        run: |
+          echo "Preparing canary workspace..."
+          sleep 5
+
+      - name: Live Activity · refresh
+        uses: davidpovarsky/github-automation/live-refresh@main
+        continue-on-error: true
+        with:
+          event: refresh
+          device_id: ${{ secrets.NOTIFY_DEVICE_ID }}
+          token: ${{ secrets.NOTIFY_DEVICE_TOKEN }}
+          github_token: ${{ github.token }}
+      - name: Execute Canary Step
+        run: |
+          echo "Executing step..."
+          if [ "${{ inputs.scenario }}" = "failure" ]; then
+            echo "Simulating failure scenario..."
+            exit 1
+          fi
+          sleep 5
+
+      - name: Live Activity · refresh
+        uses: davidpovarsky/github-automation/live-refresh@main
+        continue-on-error: true
+        with:
+          event: refresh
+          device_id: ${{ secrets.NOTIFY_DEVICE_ID }}
+          token: ${{ secrets.NOTIFY_DEVICE_TOKEN }}
+          github_token: ${{ github.token }}
+      - name: Conclude Canary Run
+        run: |
+          echo "Canary run concluded successfully."
+          sleep 2
+
+  canary-matrix:
+    name: Matrix Job
+    if: ${{ inputs.scenario == 'matrix' }}
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        worker: [node-1, node-2]
+    steps:
+      - name: Live Activity · refresh
+        uses: davidpovarsky/github-automation/live-refresh@main
+        continue-on-error: true
+        with:
+          event: refresh
+          device_id: ${{ secrets.NOTIFY_DEVICE_ID }}
+          token: ${{ secrets.NOTIFY_DEVICE_TOKEN }}
+          github_token: ${{ github.token }}
+      - name: Run Matrix Workload
+        run: |
+          echo "Running workload for ${{ matrix.worker }}..."
+          sleep 6
