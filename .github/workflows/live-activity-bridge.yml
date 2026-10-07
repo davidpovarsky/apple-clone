@@ -3,8 +3,8 @@ name: Live Activity Bridge
 on:
   workflow_run:
     workflows:
-      - "Update README Dependencies and Structure"
       - "Canary Live Activity"
+      - "Update README Dependencies and Structure"
     types:
       - requested
       - in_progress
