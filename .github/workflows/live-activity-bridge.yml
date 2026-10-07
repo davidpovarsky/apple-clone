@@ -4,6 +4,7 @@ on:
   workflow_run:
     workflows:
       - "Canary Live Activity"
+      - "Live Activity Visual Test"
       - "Update README Dependencies and Structure"
     types:
       - requested
