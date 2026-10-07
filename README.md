@@ -47,6 +47,8 @@ Here is the folder structure of this app.
 ```bash
 apple-clone/
   |- public/
+  |- scripts/
+    |-- validate-project-board.sh
   |- src/
     |-- assets/
     |-- components/
